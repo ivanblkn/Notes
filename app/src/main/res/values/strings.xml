@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Notes</string>
+    <string name="minor">minor</string>
+    <string name="medium">medium</string>
+    <string name="important">important"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="headerNotes">Список заметок</string>
+    <string name="nameNote">Название заметки</string>
+    <string name="description">Описание</string>
+    <string name="date_of_create">Дата создания</string>
+    <string name="importantText">Важность</string>
+    <string name="isDone">Сделано</string>
+    <string name="btn_on">Записать</string>
+    <string name="btn_cancel">Отмена</string>
 </resources>

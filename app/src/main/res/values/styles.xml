@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MinorStyle">
+        <item name="android:background">@color/minor_bg_color</item>
+    </style>
+    <style name="MediumStyle">
+        <item name="android:background">@color/minor_bg_color</item>
+    </style>
+    <style name="ImportantStyle">
+        <item name="android:background">@color/minor_bg_color</item>
+    </style>
+</resources>
