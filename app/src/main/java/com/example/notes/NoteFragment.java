@@ -7,18 +7,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
+import android.widget.TimePicker;
+import android.widget.Toolbar;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textview.MaterialTextView;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,14 +42,27 @@ public class NoteFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM = "index";
 
+
     private boolean showedQuestion;
     // TODO: Rename and change types of parameters
     private int mParam;
 
     private Note note;
 
+    private LocalDate dataInForm;
+    private LocalTime timeInForm;
+
     public NoteFragment() {
+        showedQuestion = false;
         // Required empty public constructor
+    }
+
+    public void setDateNote(LocalDate remindDate) {
+        note.saveRemindDate(remindDate);
+    }
+
+    public void setTimeNote(LocalTime remindTime) {
+        note.saveRemindTime(remindTime);
     }
 
     /**
@@ -63,22 +86,67 @@ public class NoteFragment extends Fragment {
         if (getArguments() != null) {
             this.note = new Note((Note) getArguments().getParcelable(ARG_PARAM));
         }
+        if (Notes.getActivityIndex() >= 0) setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.note_menu, menu);
+        menu.findItem(R.id.action_exit).setVisible(false);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_reminder:
+                if (note.getRemindDate() != null) {
+                    note.saveRemindDate(null);
+                    getChildFragmentManager().popBackStack();
+                } else {
+                    note.saveRemindDate(LocalDate.now());
+                    note.saveRemindTime(LocalTime.now());
+                    getChildFragmentManager()
+                            .beginTransaction()
+                            .addToBackStack("")
+                            .replace(R.id.reminderFrame, ReminderFrame.newInstance(note))
+                            .commit();
+                }
+                break;
+            case R.id.delete:
+                Notes.deleteActive();
+                Notes.resetActivityIndex();
+                setHasOptionsMenu(false);
+                NotesFragment notesFragment = (NotesFragment) requireActivity()
+                        .getSupportFragmentManager()
+                        .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
+                        .findFirst().get();
+                notesFragment.showList();
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_note, container, false);
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Bundle args = getArguments();
         showedQuestion = false;
+        note = null;
         if (getArguments() != null) {
             note = new Note((Note) getArguments().getParcelable(ARG_PARAM));
+        }
+        if (note != null) {
+
             TextInputEditText nameNote = view.findViewById(R.id.name_note);
             nameNote.setText(note.getName());
             nameNote.addTextChangedListener(new TextWatcher() {
@@ -110,27 +178,37 @@ public class NoteFragment extends Fragment {
             TextInputEditText dateCreate = view.findViewById(R.id.data_of_created);
             dateCreate.setText(note.getDateOfCreate().toString());
 
+            if (note.getRemindDate() != null) {
+                ReminderFrame rf = ReminderFrame.newInstance(note);
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack("")
+                        .replace(R.id.reminderFrame, rf)
+                        .commit();
+            }
+
             Button btnOk = view.findViewById(R.id.btn_ok);
             btnOk.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View btnView) {
-                    Note note = Notes.getActivityNote();
+                    Note activeNote = Notes.getActivityNote();
                     if (note != null) {
-                        note.saveValues(
+
+                        activeNote.saveValues(
                                 ((TextInputEditText) view.findViewById(R.id.name_note)).getText().toString(),
                                 ((TextInputEditText) view.findViewById(R.id.description_note)).getText().toString(),
                                 Importance.values()[((SeekBar) view.findViewById(R.id.seekBar)).getProgress()],
                                 ((CheckBox) view.findViewById(R.id.isDone)).isChecked());
-
+                        activeNote.saveRemindDate(note.getRemindDate());
+                        activeNote.saveRemindTime(note.getRemindTime());
+                        Notes.resetActivityIndex();
+                        setHasOptionsMenu(false);
                         NotesFragment notesFragment = (NotesFragment) requireActivity()
                                 .getSupportFragmentManager()
-                                .getFragments().stream().filter( fragment -> fragment instanceof NotesFragment)
+                                .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
                                 .findFirst().get();
-
-                        Notes.resetActivityIndex();
                         notesFragment.showList();
-                        requireActivity().getSupportFragmentManager().popBackStack();
 
                     }
                 }
@@ -138,6 +216,7 @@ public class NoteFragment extends Fragment {
 
         }
     }
+
     public boolean showChildQuestion() {
         if (!showedQuestion) {
             getChildFragmentManager()
@@ -150,6 +229,19 @@ public class NoteFragment extends Fragment {
         }
 
         return showedQuestion;
+    }
+
+    public void resetShow() {
+        showedQuestion = false;
+    }
+
+    public Note getNote() {
+        return note;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override

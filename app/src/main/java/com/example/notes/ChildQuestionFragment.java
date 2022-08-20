@@ -61,7 +61,6 @@ public class ChildQuestionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_child_question, container, false);
     }
 
@@ -84,25 +83,24 @@ public class ChildQuestionFragment extends Fragment {
 
                 getParentFragmentManager().popBackStack();
 
-//                NoteFragment notesFragment = (NoteFragment) requireActivity().getSupportFragmentManager()
-//                        .getFragments().stream().filter( fragment -> fragment instanceof NoteFragment)
-//                        .findFirst().get();
-                //Notes.resetActivityIndex();
-
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
                 } else {
                     requireActivity().getSupportFragmentManager().popBackStack();
                 }
                 notesFragment.showList();
-//                requireActivity().getSupportFragmentManager().popBackStack();
 
             }
         });
         MaterialButton btnNO = (MaterialButton) view.findViewById(R.id.btn_no);
         btnNO.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
+                NoteFragment noteFragment = (NoteFragment) requireActivity().getSupportFragmentManager()
+                        .getFragments().stream().filter( fragment -> fragment instanceof NoteFragment)
+                        .findFirst().get();
+                noteFragment.resetShow();
                 getParentFragmentManager().popBackStack();
             }
         });
