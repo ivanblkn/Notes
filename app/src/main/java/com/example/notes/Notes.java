@@ -31,7 +31,9 @@ public class Notes {
     private static int activityIndex = -1;
 
     public Notes() {
-        if (listNotes == null) loadNotes();
+        if (listNotes == null) {
+            loadNotes();
+        }
     }
 
     private static void loadNotes() {
@@ -68,11 +70,29 @@ public class Notes {
     }
 
     public static Note getNote(int index) {
-        return listNotes.get(index);
+        for (int i=0; i<listNotes.size(); i++) {
+            if (listNotes.get(i).getKey() == index) {
+                return listNotes.get(i);
+            }
+        }
+        return null;
     }
 
     public static int getSize() {
         return listNotes.size();
+    }
+
+    public static void deleteActive() {
+        listNotes.remove(activityIndex);
+    }
+
+    public static void deleteIndex(int index) {
+        for (int i=0; i<listNotes.size(); i++) {
+            if (listNotes.get(i).getKey() == index) {
+                listNotes.remove(i);
+                return;
+            }
+        }
     }
 
 }

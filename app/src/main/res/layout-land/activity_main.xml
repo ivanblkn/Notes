@@ -1,42 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:layout_width="0px"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="?attr/actionBarSize"
 
-            <FrameLayout
-                android:id="@+id/note_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            app:subtitleTextColor="@color/white"
+            app:title="@string/app_name"
 
-        </androidx.core.widget.NestedScrollView>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/detailsSide"
-        android:layout_width="0px"
+            app:titleTextColor="@color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:orientation="horizontal">
+        <FrameLayout
+            android:id="@+id/fr_notesContainer"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <FrameLayout
-                android:id="@+id/details_container"
+            <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
 
-        </androidx.core.widget.NestedScrollView>
+                <FrameLayout
+                    android:id="@+id/notesContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-    </FrameLayout>
+            </androidx.core.widget.NestedScrollView>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fr_detailsContainer"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/details_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </androidx.core.widget.NestedScrollView>
+
+        </FrameLayout>
+    </LinearLayout>
 </LinearLayout>
