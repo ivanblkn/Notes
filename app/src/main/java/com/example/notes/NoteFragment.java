@@ -1,11 +1,13 @@
 package com.example.notes;
 
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -20,15 +22,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,14 +123,30 @@ public class NoteFragment extends Fragment {
                 }
                 break;
             case R.id.delete:
-                Notes.deleteActive();
-                Notes.resetActivityIndex();
-                setHasOptionsMenu(false);
-                NotesFragment notesFragment = (NotesFragment) requireActivity()
-                        .getSupportFragmentManager()
-                        .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
-                        .findFirst().get();
-                notesFragment.showList();
+                new AlertDialog.Builder(getContext())
+                        .setTitle("подтверждение удаления!")
+                        .setMessage("Вы действительно хотите удалить заметку")
+                        .setIcon(R.drawable.ic_baseline_delete_24)
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Notes.deleteActive();
+                                Notes.resetActivityIndex();
+                                setHasOptionsMenu(false);
+                                NotesFragment notesFragment = (NotesFragment) requireActivity()
+                                        .getSupportFragmentManager()
+                                        .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
+                                        .findFirst().get();
+                                notesFragment.showList();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        })
+                        .show();
 
         }
 
@@ -189,12 +213,18 @@ public class NoteFragment extends Fragment {
 
             Button btnOk = view.findViewById(R.id.btn_ok);
             btnOk.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View btnView) {
                     Note activeNote = Notes.getActivityNote();
                     if (note != null) {
-
+                        if (note.getRemindDate() != null) {
+                            if (note.getRemindDate().equals(LocalDate.now())
+                                    && note.getRemindTime().isBefore(LocalTime.now())) {
+                                Snackbar.make(view.findViewById(R.id.reminderFrame), "Неправильное время напоминания",
+                                        Snackbar.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
                         activeNote.saveValues(
                                 ((TextInputEditText) view.findViewById(R.id.name_note)).getText().toString(),
                                 ((TextInputEditText) view.findViewById(R.id.description_note)).getText().toString(),
@@ -209,7 +239,9 @@ public class NoteFragment extends Fragment {
                                 .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
                                 .findFirst().get();
                         notesFragment.showList();
-
+                        Toast.makeText(requireContext(),
+                                "Заметка сохранена",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             });

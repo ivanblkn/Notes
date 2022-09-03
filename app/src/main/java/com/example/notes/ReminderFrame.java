@@ -13,10 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TimePicker;
-import android.widget.Toast;
+
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.time.LocalTime;
 import java.util.Calendar;
 
@@ -97,9 +97,7 @@ public class ReminderFrame extends Fragment {
             calendar.set(LocalDate.ofEpochDay(longDate).getYear(),
                     LocalDate.ofEpochDay(longDate).getMonthValue() - 1,
                     LocalDate.ofEpochDay(longDate).getDayOfMonth());
-            cw.setDate(LocalDate.now().toEpochDay());
         }
-        ;
         cw.setDate(calendar.getTimeInMillis(), true, true);
 
         cw.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {

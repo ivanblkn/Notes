@@ -5,9 +5,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +22,15 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.google.android.material.navigation.NavigationView;
+
+// Toast - Реализован при сохранении заметки
+//SnackBar - реализован при неправильно установленно времени.
+//SnackBar с действием, вызывается при установке признака сделано в списке в контекстом меню элемента.
+//AlertDialog Подтверждение удаления
+//AlertDialog + Custom View - Реализован контекстном меню списка элемента "Переименовать".
+//DialogFragment + Custom view - Реализован в установке напоминания из контекстного меню
+//BottomSheet - Реализован в "показать описание" из контекстного меню
+//Push Notification - Реализован из контекстного меню "Показать уведомление"
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
 //        getSupportFragmentManager().getFragment()
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel();
+        }
 
         initToolBar();
 
@@ -114,16 +131,20 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 switch (id){
                     case R.id.action_drawer_about:
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .addToBackStack("")
-                                .add(R.id.topLayout, new AboutFragment())
-                                .commit();
+                        if (getSupportFragmentManager().getFragments().stream().filter(fragment -> fragment instanceof AboutFragment).count() == 0) {
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .addToBackStack("")
+                                    .add(R.id.topLayout, new AboutFragment())
+                                    .commit();
+                        }
+                        drawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                     case R.id.action_drawer_exit:
                         finish();
@@ -132,6 +153,19 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void createNotificationChannel() {
+        String name = "Name";
+        String descriptionText = "Description";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name,
+                importance);
+        channel.setDescription(descriptionText);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(channel);
 
     }
 

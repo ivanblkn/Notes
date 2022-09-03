@@ -78,6 +78,10 @@ public class Notes {
         return null;
     }
 
+    public static Note getIndexNote(int index) {
+        return listNotes.get(index);
+    }
+
     public static int getSize() {
         return listNotes.size();
     }
