@@ -29,18 +29,19 @@
             android:id="@+id/fr_notesContainer"
             android:layout_width="0px"
             android:layout_height="match_parent"
+            android:background="@color/bg_main_color"
             android:layout_weight="1">
 
-            <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <!--            <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                <FrameLayout
-                    android:id="@+id/notesContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                            <FrameLayout
+                                android:id="@+id/notesContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
 
-            </androidx.core.widget.NestedScrollView>
+                        </androidx.core.widget.NestedScrollView> -->
 
         </FrameLayout>
 

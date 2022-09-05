@@ -9,4 +9,7 @@
     <style name="ImportantStyle">
         <item name="android:background">@color/minor_bg_color</item>
     </style>
+    <style name="CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/bg_note</item>
+    </style>
 </resources>

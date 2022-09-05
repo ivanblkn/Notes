@@ -215,7 +215,7 @@ public class NoteFragment extends Fragment {
             btnOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View btnView) {
-                    Note activeNote = Notes.getActivityNote();
+//                    Note activeNote = Notes.getActivityNote();
                     if (note != null) {
                         if (note.getRemindDate() != null) {
                             if (note.getRemindDate().equals(LocalDate.now())
@@ -225,20 +225,20 @@ public class NoteFragment extends Fragment {
                                 return;
                             }
                         }
-                        activeNote.saveValues(
-                                ((TextInputEditText) view.findViewById(R.id.name_note)).getText().toString(),
-                                ((TextInputEditText) view.findViewById(R.id.description_note)).getText().toString(),
-                                Importance.values()[((SeekBar) view.findViewById(R.id.seekBar)).getProgress()],
-                                ((CheckBox) view.findViewById(R.id.isDone)).isChecked());
-                        activeNote.saveRemindDate(note.getRemindDate());
-                        activeNote.saveRemindTime(note.getRemindTime());
-                        Notes.resetActivityIndex();
+//                        activeNote.saveValues(
+//                                ((TextInputEditText) view.findViewById(R.id.name_note)).getText().toString(),
+//                                ((TextInputEditText) view.findViewById(R.id.description_note)).getText().toString(),
+//                                Importance.values()[((SeekBar) view.findViewById(R.id.seekBar)).getProgress()],
+//                                ((CheckBox) view.findViewById(R.id.isDone)).isChecked());
+//                        activeNote.saveRemindDate(note.getRemindDate());
+//                        activeNote.saveRemindTime(note.getRemindTime());
+//                        Notes.resetActivityIndex();
                         setHasOptionsMenu(false);
-                        NotesFragment notesFragment = (NotesFragment) requireActivity()
-                                .getSupportFragmentManager()
-                                .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
-                                .findFirst().get();
-                        notesFragment.showList();
+//                        NotesFragment notesFragment = (NotesFragment) requireActivity()
+//                                .getSupportFragmentManager()
+//                                .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
+//                                .findFirst().get();
+//                        notesFragment.showList();
                         Toast.makeText(requireContext(),
                                 "Заметка сохранена",
                                 Toast.LENGTH_SHORT).show();

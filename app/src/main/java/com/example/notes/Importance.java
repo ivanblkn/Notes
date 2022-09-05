@@ -1,18 +1,19 @@
 package com.example.notes;
 
 import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 
 public enum Importance {
-    MINOR(R.string.minor, R.color.minor_bg_color),
-    MEDIUM(R.string.medium, R.color.medium_bg_color),
-    IMPORTANT(R.string.important,R.color.important_bg_color);
+    MINOR(R.string.minor, R.drawable.ic_minor),
+    MEDIUM(R.string.medium, R.drawable.ic_medium),
+    IMPORTANT(R.string.important,R.drawable.ic_important);
 
     @StringRes
     private final int title;
 
-    @ColorRes
+    @DrawableRes
     private final int impColorRes;
 
     Importance(int title, int themeRes) {

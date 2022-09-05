@@ -11,5 +11,7 @@
     <color name="medium_bg_color">#80C2EDC9</color>
     <color name="important_bg_color">#80F6B9B9</color>
     <color name="blue">#36F4D7</color>
-    <color name="bg_note">#CCC8C8C8</color>
+    <color name="bg_note">#373740</color>
+    <color name="bg_main_color">#4D4D59</color>
+
 </resources>

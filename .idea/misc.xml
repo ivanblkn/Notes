@@ -4,12 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/check_do.xml" value="0.117" />
+        <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_baseline_add_photo_alternate_24.xml" value="0.1935" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.2565" />
+        <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.1935" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_baseline_delete_forever_24.xml" value="0.1135" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.117" />
+        <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_baseline_format_list_bulleted_24.xml" value="0.1935" />
+        <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.1935" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_baseline_watch_later_24.xml" value="0.117" />
+        <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_important.xml" value="0.196" />
+        <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_minor.xml" value="0.196" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/is_not_do.xml" value="0.2565" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/drawable/tmp.xml" value="0.117" />
+        <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout-land/activity_layout.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout-land/activity_main.xml" value="0.30687830687830686" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/activity_main.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/drawer_header.xml" value="0.3614583333333333" />
@@ -17,9 +24,11 @@
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_child_question.xml" value="0.3432971014492754" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_note.xml" value="0.3432971014492754" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_r_v__notes.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_reminder_frame.xml" value="0.3432971014492754" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_show_description.xml" value="0.1762917933130699" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/note.xml" value="0.2965811965811966" />
+        <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/note_card.xml" value="0.33" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/rename_dialog.xml" value="0.14221014492753623" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/layout/tmp.xml" value="0.25" />
         <entry key="..\:/Users/belki/AndroidStudioProjects/Notes/app/src/main/res/menu-land/notes_popup.xml" value="0.16354166666666667" />

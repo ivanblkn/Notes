@@ -23,15 +23,6 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-// Toast - Реализован при сохранении заметки
-//SnackBar - реализован при неправильно установленно времени.
-//SnackBar с действием, вызывается при установке признака сделано в списке в контекстом меню элемента.
-//AlertDialog Подтверждение удаления
-//AlertDialog + Custom View - Реализован контекстном меню списка элемента "Переименовать".
-//DialogFragment + Custom view - Реализован в установке напоминания из контекстного меню
-//BottomSheet - Реализован в "показать описание" из контекстного меню
-//Push Notification - Реализован из контекстного меню "Показать уведомление"
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
@@ -39,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(null);
-//        getSupportFragmentManager().getFragment()
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -52,22 +41,36 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
 
-            NotesFragment notesFragment = NotesFragment.newInstance();
-
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.notesContainer, notesFragment, FRAGMENT_TAG)
+                    .replace(R.id.fr_notesContainer, RV_NotesFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
+
         }
+        LinearLayout.LayoutParams lParam_detailsSide = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams lParam_notesContainer = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
+        FrameLayout fl_detailsSide = findViewById(R.id.fr_detailsContainer);
+        FrameLayout fl_notesContainer = findViewById(R.id.fr_notesContainer);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            lParam_detailsSide.weight = 1;
+            lParam_notesContainer.weight = 1;
+        } else {
+            lParam_detailsSide.weight = 0;
+            lParam_notesContainer.weight = 1;
+        }
+        fl_detailsSide.setLayoutParams(lParam_detailsSide);
+        fl_notesContainer.setLayoutParams(lParam_notesContainer);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("ResourceType")
     @Override
     public void onBackPressed() {
-        if (Notes.getActivityIndex()>=0) {
+        if (Notes.getActivityIndex() >= 0) {
             NoteFragment notesFragment = (NoteFragment) getSupportFragmentManager()
-                    .getFragments().stream().filter( fragment -> fragment instanceof NoteFragment)
+                    .getFragments().stream().filter(fragment -> fragment instanceof NoteFragment)
                     .findFirst().get();
             if (notesFragment.showChildQuestion()) {
                 LinearLayout.LayoutParams lParam_detailsSide = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
@@ -115,14 +118,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
     }
-    private void initToolBar()    {
+
+    private void initToolBar() {
         Toolbar tb = findViewById(R.id.toolBar);
         setSupportActionBar(tb);
         if (getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_PORTRAIT) initDrawer(tb);
     }
 
-    private void initDrawer(Toolbar toolbar){
+    private void initDrawer(Toolbar toolbar) {
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -135,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                switch (id){
+                switch (id) {
                     case R.id.action_drawer_about:
                         if (getSupportFragmentManager().getFragments().stream().filter(fragment -> fragment instanceof AboutFragment).count() == 0) {
                             getSupportFragmentManager()
@@ -155,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createNotificationChannel() {
         String name = "Name";
