@@ -22,7 +22,7 @@ public class NoteSourceImp implements NoteSourceInterface {
 
     @Override
     public Note getCardNote(int position) {
-        return noteSource.get(position);
+        return noteSource.get(position).setRV_position(position);
     }
 
     @Override
@@ -30,4 +30,18 @@ public class NoteSourceImp implements NoteSourceInterface {
         return noteSource.size();
     }
 
+    @Override
+    public void updateNote(Note note) {
+        noteSource.set(note.getRV_position(), note);
+    }
+
+    @Override
+    public void deleteNote(int position) {
+        noteSource.remove(position);
+    }
+
+    @Override
+    public void addNote(Note note) {
+        noteSource.add(note);
+    }
 }

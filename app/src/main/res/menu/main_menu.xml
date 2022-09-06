@@ -6,9 +6,15 @@
         android:title="@string/menu_about"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_add"
+        android:icon="@drawable/ic_baseline_add_reaction_24"
+        android:title="@string/menu_exit"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/action_exit"
         android:icon="@drawable/ic_baseline_exit_to_app_24"
         android:title="@string/menu_exit"
         app:showAsAction="always"/>
+
 
 </menu>

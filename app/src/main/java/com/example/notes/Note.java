@@ -22,6 +22,7 @@ public class Note implements Parcelable {
     private int key;
     private LocalDate remindDate;
     private LocalTime remindTime;
+    private int RV_position;
 
     public Note() {
         this.name = "Default name " + String.valueOf(noteCounter);
@@ -32,6 +33,19 @@ public class Note implements Parcelable {
         this.key = noteCounter++;
     }
 
+    public Note(boolean isEmpty) {
+        RV_position = -1;
+        importance = Importance.MINOR;
+        this.dateOfCreate = new Date();
+    }
+    public Note setRV_position(int position)    {
+        this.RV_position = position;
+        return this;
+    }
+
+    public int getRV_position() {
+        return RV_position;
+    }
     public Note(Note note) {
         name = note.name;
         description = note.description;
@@ -42,7 +56,7 @@ public class Note implements Parcelable {
         isDone = note.isDone;
         remindDate = note.remindDate;
         remindTime = note.remindTime;
-
+        RV_position = note.RV_position;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -55,6 +69,7 @@ public class Note implements Parcelable {
         remindDate = LocalDate.ofEpochDay(in.readLong());
         remindTime = LocalTime.ofSecondOfDay(in.readLong());
         isDone = in.readByte() != 0;
+        RV_position = in.readInt();
     }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
@@ -148,5 +163,6 @@ public class Note implements Parcelable {
         parcel.writeLong(remindDate.toEpochDay());
         parcel.writeLong(remindTime.toSecondOfDay());
         parcel.writeByte((byte) (isDone ? 1 : 0));
+        parcel.writeInt(RV_position);
     }
 }

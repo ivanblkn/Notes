@@ -93,8 +93,13 @@ public class NoteFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             this.note = new Note((Note) getArguments().getParcelable(ARG_PARAM));
+
         }
-        if (Notes.getActivityIndex() >= 0) setHasOptionsMenu(true);
+        if (((MainActivity)requireActivity()).getStatusShowNote()) {
+            setHasOptionsMenu(true);
+        } else {
+            setHasOptionsMenu(false);
+        }
     }
 
     @Override
@@ -131,14 +136,22 @@ public class NoteFragment extends Fragment {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Notes.deleteActive();
-                                Notes.resetActivityIndex();
-                                setHasOptionsMenu(false);
-                                NotesFragment notesFragment = (NotesFragment) requireActivity()
+                                RV_NotesFragment rv_notesFragment = (RV_NotesFragment) requireActivity()
                                         .getSupportFragmentManager()
-                                        .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
+                                        .getFragments().stream().filter(fragment -> fragment instanceof RV_NotesFragment)
                                         .findFirst().get();
-                                notesFragment.showList();
+                                ((MainActivity) requireActivity()).setShowNote(false);
+                                rv_notesFragment.deleteNoteSource(note.getRV_position());
+                                setHasOptionsMenu(false);
+
+//                                Notes.deleteActive();
+//                                Notes.resetActivityIndex();
+//                                setHasOptionsMenu(false);
+//                                NotesFragment notesFragment = (NotesFragment) requireActivity()
+//                                        .getSupportFragmentManager()
+//                                        .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
+//                                        .findFirst().get();
+//                                notesFragment.showList();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -225,20 +238,28 @@ public class NoteFragment extends Fragment {
                                 return;
                             }
                         }
-//                        activeNote.saveValues(
-//                                ((TextInputEditText) view.findViewById(R.id.name_note)).getText().toString(),
-//                                ((TextInputEditText) view.findViewById(R.id.description_note)).getText().toString(),
-//                                Importance.values()[((SeekBar) view.findViewById(R.id.seekBar)).getProgress()],
-//                                ((CheckBox) view.findViewById(R.id.isDone)).isChecked());
-//                        activeNote.saveRemindDate(note.getRemindDate());
-//                        activeNote.saveRemindTime(note.getRemindTime());
+                        note.saveValues(
+                                ((TextInputEditText) view.findViewById(R.id.name_note)).getText().toString(),
+                                ((TextInputEditText) view.findViewById(R.id.description_note)).getText().toString(),
+                                Importance.values()[((SeekBar) view.findViewById(R.id.seekBar)).getProgress()],
+                                ((CheckBox) view.findViewById(R.id.isDone)).isChecked());
+                        note.saveRemindDate(note.getRemindDate());
+                        note.saveRemindTime(note.getRemindTime());
 //                        Notes.resetActivityIndex();
+                        RV_NotesFragment rv_notesFragment = (RV_NotesFragment) requireActivity()
+                                .getSupportFragmentManager()
+                                .getFragments().stream().filter(fragment -> fragment instanceof RV_NotesFragment)
+                                .findFirst().get();
+                        ((MainActivity) requireActivity()).setShowNote(false);
+                        if (note.getRV_position()>0) {
+                            rv_notesFragment.updateNoteSource(note);
+                        }  else {
+                            rv_notesFragment.addNoteSource(note);
+                        }
+
                         setHasOptionsMenu(false);
-//                        NotesFragment notesFragment = (NotesFragment) requireActivity()
-//                                .getSupportFragmentManager()
-//                                .getFragments().stream().filter(fragment -> fragment instanceof NotesFragment)
-//                                .findFirst().get();
-//                        notesFragment.showList();
+
+//                        requireActivity().getSupportFragmentManager().popBackStack();
                         Toast.makeText(requireContext(),
                                 "Заметка сохранена",
                                 Toast.LENGTH_SHORT).show();
@@ -258,6 +279,8 @@ public class NoteFragment extends Fragment {
                     .commit();
             showedQuestion = true;
             return false;
+        } else {
+            setHasOptionsMenu(false);
         }
 
         return showedQuestion;

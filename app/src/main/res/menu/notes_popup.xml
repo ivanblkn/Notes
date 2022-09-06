@@ -5,7 +5,7 @@
         android:id="@+id/action_popupDelete"
         android:title="Удалить"
         />
-    <item
+<!--    <item
         android:id="@+id/action_popup_setDo"
         android:title="Сделано"
         />
@@ -25,5 +25,5 @@
         android:id="@+id/action_notification"
         android:title="Вывести уведомление"
         />
-
+-->
 </menu>

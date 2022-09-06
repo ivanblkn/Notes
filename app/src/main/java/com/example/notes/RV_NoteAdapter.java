@@ -1,5 +1,6 @@
 package com.example.notes;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,20 +9,31 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 public class RV_NoteAdapter extends RecyclerView.Adapter<RV_NoteAdapter.ViewHolder> {
     NoteSourceInterface noteSource;
     private OnItemClickListener itemClickListener;
+    private Fragment fragment;
+    private int menuPosition;
 
     public void setItemClickListener(OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
-    public RV_NoteAdapter(NoteSourceInterface noteSource) {
+    public RV_NoteAdapter(NoteSourceInterface noteSource, Fragment fragment) {
         this.noteSource = noteSource;
+        this.fragment = fragment;
+    }
+
+    private void registerContextMenu(View itemView){
+        if (fragment != null){
+            fragment.registerForContextMenu(itemView);
+        }
     }
 
     @NonNull
@@ -42,6 +54,11 @@ public class RV_NoteAdapter extends RecyclerView.Adapter<RV_NoteAdapter.ViewHold
     public int getItemCount() {
         return noteSource.size();
     }
+
+    public int getMenuPosition() {
+        return menuPosition;
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -68,6 +85,17 @@ public class RV_NoteAdapter extends RecyclerView.Adapter<RV_NoteAdapter.ViewHold
                     if (itemClickListener != null)
                         itemClickListener.onItemClick(view, position);
 
+                }
+            });
+            registerContextMenu(itemView);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public boolean onLongClick(View view) {
+                    menuPosition = getAdapterPosition();
+                    itemView.showContextMenu(15, 15);
+                    return true;
                 }
             });
         }

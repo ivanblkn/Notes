@@ -169,7 +169,7 @@ public class NotesFragment extends Fragment {
 
             });
 
-            linearLayoutItem.setOnLongClickListener(v->{
+/*            linearLayoutItem.setOnLongClickListener(v->{
                 Activity activity = requireActivity();
                 PopupMenu popupMenu = new PopupMenu(activity, v);
                 activity.getMenuInflater().inflate(R.menu.notes_popup, popupMenu.getMenu());
@@ -272,7 +272,7 @@ public class NotesFragment extends Fragment {
                 popupMenu.show();
 
                 return true;
-            });
+            });*/
 
 
             TextView textViewDescription = new TextView(rootContext);

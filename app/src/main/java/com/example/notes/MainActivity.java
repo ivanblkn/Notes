@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
@@ -27,10 +28,50 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
     private Notes notes;
+    private boolean isShowNote;
+
+    public void setShowNote(boolean statusNote) {
+        isShowNote = statusNote;
+        setVisibleNotesDetail();
+    }
+
+    public boolean getStatusShowNote() {
+        return isShowNote;
+    }
+
+    public void setVisibleNotesDetail() {
+        LinearLayout.LayoutParams lParam_detailsSide = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams lParam_notesContainer = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
+        FrameLayout fl_detailsSide = findViewById(R.id.fr_detailsContainer);
+        FrameLayout fl_notesContainer = findViewById(R.id.fr_notesContainer);
+        if (isShowNote) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                lParam_detailsSide.weight = 1;
+                lParam_notesContainer.weight = 1;
+            } else {
+                lParam_detailsSide.weight = 1;
+                lParam_notesContainer.weight = 0;
+            }
+        } else {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                lParam_detailsSide.weight = 0;
+                lParam_notesContainer.weight = 1;
+            } else {
+                lParam_detailsSide.weight = 0;
+                lParam_notesContainer.weight = 1;
+            }
+        }
+        fl_detailsSide.setLayoutParams(lParam_detailsSide);
+        fl_notesContainer.setLayoutParams(lParam_notesContainer);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        if (getArguments() != null) {
+//            mParam1 = getArguments().getString(ARG_PARAM1);
         setContentView(R.layout.activity_main);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -46,43 +87,33 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fr_notesContainer, RV_NotesFragment.newInstance())
                     .addToBackStack(null)
                     .commit();
-
-        }
-        LinearLayout.LayoutParams lParam_detailsSide = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
-        LinearLayout.LayoutParams lParam_notesContainer = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
-        FrameLayout fl_detailsSide = findViewById(R.id.fr_detailsContainer);
-        FrameLayout fl_notesContainer = findViewById(R.id.fr_notesContainer);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            lParam_detailsSide.weight = 1;
-            lParam_notesContainer.weight = 1;
+            isShowNote = false;
         } else {
-            lParam_detailsSide.weight = 0;
-            lParam_notesContainer.weight = 1;
+            isShowNote = savedInstanceState.getBoolean("isShowNote");
         }
-        fl_detailsSide.setLayoutParams(lParam_detailsSide);
-        fl_notesContainer.setLayoutParams(lParam_notesContainer);
-
+        setVisibleNotesDetail();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("ResourceType")
     @Override
     public void onBackPressed() {
-        if (Notes.getActivityIndex() >= 0) {
+        if (isShowNote) {
             NoteFragment notesFragment = (NoteFragment) getSupportFragmentManager()
                     .getFragments().stream().filter(fragment -> fragment instanceof NoteFragment)
                     .findFirst().get();
             if (notesFragment.showChildQuestion()) {
-                LinearLayout.LayoutParams lParam_detailsSide = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
-                LinearLayout.LayoutParams lParam_notesContainer = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
-                FrameLayout fl_detailsSide = (FrameLayout) findViewById(R.id.fr_detailsContainer);
-                FrameLayout fl_notesContainer = (FrameLayout) findViewById(R.id.fr_notesContainer);
-                lParam_detailsSide.weight = 0;
-                lParam_notesContainer.weight = 1;
-                fl_detailsSide.setLayoutParams(lParam_detailsSide);
-                fl_notesContainer.setLayoutParams(lParam_notesContainer);
-                notesFragment.setHasOptionsMenu(false);
-                Notes.resetActivityIndex();
+                setShowNote(false);
+//                LinearLayout.LayoutParams lParam_detailsSide = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
+//                LinearLayout.LayoutParams lParam_notesContainer = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
+//                FrameLayout fl_detailsSide = (FrameLayout) findViewById(R.id.fr_detailsContainer);
+//                FrameLayout fl_notesContainer = (FrameLayout) findViewById(R.id.fr_notesContainer);
+//                lParam_detailsSide.weight = 0;
+//                lParam_notesContainer.weight = 1;
+//                fl_detailsSide.setLayoutParams(lParam_detailsSide);
+//                fl_notesContainer.setLayoutParams(lParam_notesContainer);
+//                notesFragment.setHasOptionsMenu(false);
+//                Notes.resetActivityIndex();
             }
         } else {
             super.onBackPressed();
@@ -107,6 +138,15 @@ public class MainActivity extends AppCompatActivity {
                         .add(R.id.topLayout, new AboutFragment())
                         .commit();
                 break;
+            case R.id.action_add:
+                NoteFragment noteFragment = NoteFragment.newInstance(new Note(true));
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.details_container, noteFragment)
+                        .commit();
+                setShowNote(true);
+                break;
             case R.id.action_exit:
                 finish();
                 break;
@@ -116,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean("isShowNote",isShowNote);
         super.onSaveInstanceState(outState);
     }
 
