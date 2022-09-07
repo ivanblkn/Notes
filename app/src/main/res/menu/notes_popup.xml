@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_popupDelete"
+        android:title="Удалить"
+        />
+<!--    <item
+        android:id="@+id/action_popup_setDo"
+        android:title="Сделано"
+        />
+    <item
+        android:id="@+id/action_popup_rename"
+        android:title="Переименовать"
+        />
+    <item
+        android:id="@+id/action_popup_reminder"
+        android:title="Установить напоминание"
+        />
+    <item
+        android:id="@+id/action_popup_description"
+        android:title="Показать описание"
+        />
+    <item
+        android:id="@+id/action_notification"
+        android:title="Вывести уведомление"
+        />
+-->
+</menu>

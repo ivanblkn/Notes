@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:openDrawer="start">
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    android:orientation="vertical">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
@@ -29,14 +19,12 @@
 
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
-
         <FrameLayout
             android:id="@+id/fr_notesContainer"
             android:layout_width="0px"
@@ -44,16 +32,16 @@
             android:background="@color/bg_main_color"
             android:layout_weight="1">
 
-<!--            <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <!--            <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                <FrameLayout
-                    android:id="@+id/notesContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                            <FrameLayout
+                                android:id="@+id/notesContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
 
-            </androidx.core.widget.NestedScrollView> -->
+                        </androidx.core.widget.NestedScrollView> -->
 
         </FrameLayout>
 
@@ -76,13 +64,4 @@
 
         </FrameLayout>
     </LinearLayout>
-        </LinearLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/menu_drawer" />
-</androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>
