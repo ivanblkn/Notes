@@ -99,24 +99,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (isShowNote) {
-            NoteFragment notesFragment = (NoteFragment) getSupportFragmentManager()
+            NoteFragment noteFragment = (NoteFragment) getSupportFragmentManager()
                     .getFragments().stream().filter(fragment -> fragment instanceof NoteFragment)
                     .findFirst().get();
-            if (notesFragment.showChildQuestion()) {
+            if (noteFragment.showChildQuestion()) {
                 setShowNote(false);
-//                LinearLayout.LayoutParams lParam_detailsSide = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
-//                LinearLayout.LayoutParams lParam_notesContainer = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT);
-//                FrameLayout fl_detailsSide = (FrameLayout) findViewById(R.id.fr_detailsContainer);
-//                FrameLayout fl_notesContainer = (FrameLayout) findViewById(R.id.fr_notesContainer);
-//                lParam_detailsSide.weight = 0;
-//                lParam_notesContainer.weight = 1;
-//                fl_detailsSide.setLayoutParams(lParam_detailsSide);
-//                fl_notesContainer.setLayoutParams(lParam_notesContainer);
-//                notesFragment.setHasOptionsMenu(false);
-//                Notes.resetActivityIndex();
             }
         } else {
             super.onBackPressed();
+            if (getSupportFragmentManager().getFragments().size() == 0) {
+                finish();
+            }
         }
 
     }
@@ -127,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -146,6 +140,18 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.details_container, noteFragment)
                         .commit();
                 setShowNote(true);
+                break;
+            case R.id.action_clear:
+                RV_NotesFragment rv = (RV_NotesFragment) getSupportFragmentManager()
+                        .getFragments().stream().filter(fragment -> fragment instanceof RV_NotesFragment)
+                        .findFirst().get();
+                rv.clearNoteSource();
+                break;
+            case R.id.action_add10:
+                RV_NotesFragment rv_add = (RV_NotesFragment) getSupportFragmentManager()
+                        .getFragments().stream().filter(fragment -> fragment instanceof RV_NotesFragment)
+                        .findFirst().get();
+                rv_add.add10NoteSource();
                 break;
             case R.id.action_exit:
                 finish();

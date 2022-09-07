@@ -14,6 +14,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 
 public class RV_NoteAdapter extends RecyclerView.Adapter<RV_NoteAdapter.ViewHolder> {
     NoteSourceInterface noteSource;
@@ -29,6 +31,14 @@ public class RV_NoteAdapter extends RecyclerView.Adapter<RV_NoteAdapter.ViewHold
         this.noteSource = noteSource;
         this.fragment = fragment;
     }
+
+    public void saveNoteSource(List<Note> noteSource) {
+        this.noteSource.saveNotes(noteSource);
+        notifyDataSetChanged();
+    }
+
+
+
 
     private void registerContextMenu(View itemView){
         if (fragment != null){
@@ -58,6 +68,7 @@ public class RV_NoteAdapter extends RecyclerView.Adapter<RV_NoteAdapter.ViewHold
     public int getMenuPosition() {
         return menuPosition;
     }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
